@@ -1,0 +1,351 @@
+IDENTIDADE VISUAL - Sistema Completo
+Visão Geral
+Este documento define o design system completo da AntropIA: cores, tipografia, espaçamento, componentes e padrões visuais.
+
+Tudo que é visual deve seguir estas especificações.
+
+Filosofia Visual
+Apple-like
+Nosso design é inspirado na abordagem Apple:
+
+Silencioso, não grita
+Funcional, a forma serve a função
+Elegante, através da simplicidade
+Consistente, padrões previsíveis
+Durável, não segue tendências passageiras
+Princípios
+Menos é sempre mais
+Funciona bem em preto e branco
+Espaçamento generoso
+Hierarquia clara
+Sem elementos decorativos
+Sistema de Cores
+Filosofia: 80/15/5
+80%: Base neutra (brancos, cinzas, pretos)
+15%: Accent primário (ação, interação)
+5%: Cores funcionais (estado, feedback)
+Base Neutra (80% da interface)
+Fundos:
+
+Primary: #FFFFFF - Fundos principais, cards
+Secondary: #F6F4F0 - PDFs, slides, leitura longa
+Tertiary: #FAFAFA - Fundos alternativos
+Textos:
+
+Primary: #1A1A1A - Texto principal
+Secondary: #6B6B6B - Texto secundário, labels
+Tertiary: #9CA3AF - Texto terciário, placeholders
+Bordas:
+
+Default: rgba(0, 0, 0, 0.1)
+Hover: rgba(0, 0, 0, 0.2)
+Focus: rgba(26, 115, 232, 0.4)
+Accent Primário (15%)
+Ação e Interação:
+
+Primary: #1A73E8 - Botões primários, links, foco
+Primary Hover: #1557B0 - Estado hover
+Primary Active: #0D3C7A - Estado active
+Primary BG: rgba(26, 115, 232, 0.08) - Fundos accent
+Primary Border: rgba(26, 115, 232, 0.2) - Bordas accent
+Cores Funcionais (5%)
+Success:
+
+Main: #2E7D32
+Background: rgba(46, 125, 50, 0.08)
+Border: rgba(46, 125, 50, 0.2)
+Uso: Confirmações, indicadores positivos
+Warning:
+
+Main: #F57C00
+Background: rgba(245, 124, 0, 0.08)
+Border: rgba(245, 124, 0, 0.2)
+Uso: Avisos, atenção necessária
+Danger:
+
+Main: #C62828
+Background: rgba(198, 40, 40, 0.08)
+Border: rgba(198, 40, 40, 0.2)
+Uso: Erros, ações destrutivas
+Info:
+
+Main: #0277BD
+Background: rgba(2, 119, 189, 0.08)
+Border: rgba(2, 119, 189, 0.2)
+Uso: Informações, dicas
+AI/Automation:
+
+Main: #7B1FA2
+Background: rgba(123, 31, 162, 0.08)
+Border: rgba(123, 31, 162, 0.2)
+Uso: Features relacionadas a IA
+Regras de Uso
+✅ Fazer:
+
+Usar tokens semânticos (--primary, não #1A73E8)
+Manter 80% da interface neutra
+Usar accent apenas para ação
+Cores funcionais apenas para estado
+❌ Não fazer:
+
+Misturar HEX direto no código
+Usar cores funcionais decorativamente
+Criar novas cores fora do sistema
+Usar accent em fundos dominantes
+Tipografia
+Fonte
+Inter (Google Fonts)
+
+Weights: 400 (Regular), 500 (Medium), 600 (Semibold)
+Fallback: -apple-system, BlinkMacSystemFont, system-ui, sans-serif
+Escala Tipográfica
+Display/Titles:
+
+4XL: 36px / 40px (letter-spacing: -0.015em)
+3XL: 30px / 36px (letter-spacing: -0.015em)
+2XL: 24px / 32px (letter-spacing: -0.015em)
+Headings:
+
+XL: 20px / 28px
+LG: 18px / 28px
+Body:
+
+Base: 16px / 24px (texto principal)
+SM: 14px / 20px (labels, UI)
+XS: 12px / 16px (captions, metadata)
+Regras de Uso
+Hierarquia:
+
+1 tamanho de display por página
+Máximo 3 níveis de hierarquia visível
+Diferença mínima entre níveis: 4px
+Weights:
+
+Regular (400): Corpo de texto, parágrafos
+Medium (500): Labels, navigation
+Semibold (600): Títulos, ênfase
+Letter-spacing:
+
+Tight (-0.015em): Displays e títulos grandes
+Normal (0): Corpo de texto
+✅ Fazer:
+
+Usar escala definida
+Semibold apenas em títulos
+Letra spacing consistente
+❌ Não fazer:
+
+Inventar tamanhos fora da escala
+Bold em corpo de texto
+Letter-spacing aleatório
+Espaçamento
+Grid Base: 4px
+Todo espaçamento deve ser múltiplo de 4px:
+
+4px (1 unit)
+8px (2 units)
+12px (3 units)
+16px (4 units)
+20px (5 units)
+24px (6 units)
+32px (8 units)
+40px (10 units)
+48px (12 units)
+64px (16 units)
+80px (20 units)
+Uso Comum
+Componentes internos:
+
+Padding de inputs: 16px
+Padding de cards: 24px
+Gap entre elementos: 16px-24px
+Layouts:
+
+Margem entre seções: 48px-64px
+Margem de página: 32px (desktop), 16px (mobile)
+✅ Fazer:
+
+Sempre usar múltiplos de 4px
+Espaçamento generoso (não apertado)
+Consistência em componentes similares
+❌ Não fazer:
+
+Valores quebrados (13px, 27px)
+Espaçamento inconsistente
+Componentes muito apertados
+Border Radius
+Escala
+SM: 6px - Pequenos elementos (badges, tags)
+MD: 10px - Padrão médio
+LG: 14px - Inputs, pequenos cards
+XL: 18px - Botões, elementos interativos
+2XL: 24px - Cards, modais
+Full: 9999px - Pills, avatares redondos
+Uso Comum
+Cards: 24px (2XL)
+Botões: 18px (XL)
+Inputs: 14px (LG)
+Badges: 9999px (Full)
+Modais: 24px (2XL)
+✅ Fazer:
+
+Usar escala definida
+Consistência em elementos similares
+Arredondamento sutil
+❌ Não fazer:
+
+Valores aleatórios
+Muito redondo (infantil)
+Misturar estilos
+Sombras
+Escala
+SM: 0 1px 2px rgba(0, 0, 0, 0.05) - Sutil
+MD: 0 4px 6px rgba(0, 0, 0, 0.07) - Cards default
+LG: 0 10px 15px rgba(0, 0, 0, 0.10) - Cards elevados
+XL: 0 20px 25px rgba(0, 0, 0, 0.12) - Modais
+Uso
+Cards: MD no default, LG no hover
+Modais: XL
+Dropdowns: LG
+Elementos fixos (header): SM
+✅ Fazer:
+
+Sombras sutis
+Consistência no uso
+Sombra aumenta levemente no hover
+❌ Não fazer:
+
+Sombras muito pesadas
+Múltiplas sombras em um elemento
+Sombra sem propósito
+Transições
+Duração
+Fast: 150ms - Micro-interações (hover)
+Base: 200ms - Padrão (animações gerais)
+Slow: 300ms - Transições complexas
+Easing
+Padrão: cubic-bezier(0.4, 0, 0.2, 1)
+Uso
+Hover states: 150ms
+Accordion/collapse: 200ms
+Page transitions: 300ms
+Loading: 200ms
+✅ Fazer:
+
+Usar easing padrão
+Transições sutis e rápidas
+Consistência na duração
+❌ Não fazer:
+
+Transições muito longas (> 400ms)
+Easing complexo sem necessidade
+Animações chamativas
+Componentes Base
+Button
+Variantes:
+
+Primary: Ação principal (azul)
+Secondary: Ação secundária (borda)
+Ghost: Ação terciária (transparente)
+Danger: Ação destrutiva (vermelho)
+Sizes:
+
+SM: 8px/16px padding, 12px font
+MD: 12px/24px padding, 14px font
+LG: 16px/32px padding, 16px font
+Estados:
+
+Default
+Hover (lift 1px + sombra)
+Active (no lift)
+Disabled (opacity 0.5)
+Input
+Specs:
+
+Padding: 16px
+Border: 1px solid border color
+Border radius: 14px
+Font: 14px Regular
+Estados:
+
+Default
+Focus (border azul + shadow)
+Error (border vermelho)
+Disabled (opacity 0.5, bg cinza)
+Card
+Specs:
+
+Padding: 24px
+Border: 1px solid border
+Border radius: 24px
+Shadow: MD default, LG hover
+Variantes:
+
+Default: Branco com borda
+Elevated: Branco com shadow
+Outlined: Só borda, sem shadow
+Badge
+Specs:
+
+Padding: 4px/12px
+Border radius: Full (pill)
+Font: 12px Medium
+Border: 1px solid
+Variantes:
+
+Primary, Success, Warning, Danger, Info, AI
+Alert
+Specs:
+
+Padding: 16px
+Border radius: 14px
+Border: 1px solid
+Font: 14px Regular
+Variantes:
+
+Success, Warning, Danger, Info
+Layouts Padrão
+Grid
+Desktop:
+
+12 colunas
+Gutter: 24px
+Max width: 1280px
+Tablet:
+
+8 colunas
+Gutter: 16px
+Mobile:
+
+4 colunas
+Gutter: 16px
+Breakpoints
+Mobile: < 768px
+Tablet: 768px - 1024px
+Desktop: > 1024px
+Iconografia
+Fonte
+Lucide React (ou similar minimalista)
+
+Specs
+Stroke width: 2px
+Tamanhos: 16px, 20px, 24px, 32px
+Cor: Herda do texto
+Uso
+Icons sempre com label (acessibilidade)
+Icons decorativos apenas se realmente necessário
+Preferir clareza a criatividade
+Checklist de Validação
+Todo design deve passar por:
+
+[ ] Usa apenas cores do sistema?
+[ ] Tipografia segue a escala?
+[ ] Espaçamento é múltiplo de 4px?
+[ ] Border radius está na escala?
+[ ] Sombras são sutis?
+[ ] Transições são rápidas (< 300ms)?
+[ ] Funciona bem em preto e branco?
+[ ] Hierarquia visual é clara?
+[ ] Próxima ação é óbvia?
+[ ] Nenhum elemento decorativo desnecessário?
+Se todos "SIM" → design aprovado. Se algum "NÃO" → ajustar.
