@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { Login } from './pages/Login'
-import { Dashboard } from './pages/Dashboard'
-import { MindmapEditor } from './pages/MindmapEditor'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider, useAuth } from './components/AuthProvider'
+import { Dashboard } from './pages/Dashboard'
+import { Login } from './pages/Login'
+import { MindmapEditor } from './pages/MindmapEditor'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { session, loading } = useAuth()
@@ -17,6 +17,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   return <>{children}</>
 }
+
+import { Toaster } from 'sonner'
 
 function App() {
   return (
@@ -36,6 +38,7 @@ function App() {
           } />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        <Toaster richColors position="top-right" />
       </AuthProvider>
     </BrowserRouter>
   )

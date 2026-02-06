@@ -6,6 +6,8 @@ import { Clock, FileText, LogOut, Plus, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+const ITEMS_PER_PAGE = 9
+
 export const Dashboard = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -14,20 +16,29 @@ export const Dashboard = () => {
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Pagination state
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
+
   useEffect(() => {
-    fetchMindmaps()
+    fetchMindmaps(1)
   }, [user])
 
-  const fetchMindmaps = async () => {
+  const fetchMindmaps = async (pageNumber: number) => {
     if (!user) return
     try {
       setLoading(true)
       setError(null)
 
-      const { data, error } = await supabase
+      const from = (pageNumber - 1) * ITEMS_PER_PAGE
+      const to = from + ITEMS_PER_PAGE - 1
+
+      const { data, error, count } = await supabase
         .from('mindmaps')
-        .select('*')
+        .select('*', { count: 'exact' })
         .order('updated_at', { ascending: false })
+        .range(from, to)
 
       if (error) {
         console.error('Erro ao buscar mindmaps:', error)
@@ -36,12 +47,24 @@ export const Dashboard = () => {
       }
 
       setMindmaps(data || [])
+      setTotalCount(count || 0)
+      setHasMore((count || 0) > to + 1)
+      setPage(pageNumber)
+
     } catch (error) {
       console.error('Erro crítico:', error)
       setError('Erro ao conectar com o servidor')
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleNextPage = () => {
+    if (hasMore) fetchMindmaps(page + 1)
+  }
+
+  const handlePrevPage = () => {
+    if (page > 1) fetchMindmaps(page - 1)
   }
 
   const handleCreate = async () => {
@@ -154,39 +177,66 @@ export const Dashboard = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mindmaps.map((map) => (
-              <div
-                key={map.id}
-                onClick={() => navigate(`/mindmap/${map.id}`)}
-                className="group relative bg-surface border border-border rounded-2xl p-6 hover:border-border-hover transition duration-150 ease-[var(--ease-standard)] cursor-pointer shadow-md hover:shadow-lg"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-10 h-10 rounded-full bg-primary-bg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition duration-150 ease-[var(--ease-standard)]">
-                    <FileText className="w-5 h-5" />
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {mindmaps.map((map) => (
+                <div
+                  key={map.id}
+                  onClick={() => navigate(`/mindmap/${map.id}`)}
+                  className="group relative bg-surface border border-border rounded-2xl p-6 hover:border-border-hover transition duration-150 ease-[var(--ease-standard)] cursor-pointer shadow-md hover:shadow-lg"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-10 h-10 rounded-full bg-primary-bg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition duration-150 ease-[var(--ease-standard)]">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <button
+                      onClick={(e) => handleDelete(e, map.id)}
+                      className="text-text-secondary hover:text-danger p-1.5 rounded-xl hover:bg-surface-hover opacity-0 group-hover:opacity-100 transition duration-150 ease-[var(--ease-standard)]"
+                      title="Excluir"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                  <button
-                    onClick={(e) => handleDelete(e, map.id)}
-                    className="text-text-secondary hover:text-danger p-1.5 rounded-xl hover:bg-surface-hover opacity-0 group-hover:opacity-100 transition duration-150 ease-[var(--ease-standard)]"
-                    title="Excluir"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
 
-                <h3 className="text-lg font-semibold mb-2 truncate group-hover:text-primary transition duration-150 ease-[var(--ease-standard)]">
-                  {map.title}
-                </h3>
+                  <h3 className="text-lg font-semibold mb-2 truncate group-hover:text-primary transition duration-150 ease-[var(--ease-standard)]">
+                    {map.title}
+                  </h3>
 
-                <div className="flex items-center gap-2 text-sm text-text-secondary">
-                  <Clock className="w-4 h-4" />
-                  <span>
-                    Atualizado {formatDistanceToNow(new Date(map.updated_at), { locale: ptBR, addSuffix: true })}
-                  </span>
+                  <div className="flex items-center gap-2 text-sm text-text-secondary">
+                    <Clock className="w-4 h-4" />
+                    <span>
+                      Atualizado {formatDistanceToNow(new Date(map.updated_at), { locale: ptBR, addSuffix: true })}
+                    </span>
+                  </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            {(page > 1 || hasMore) && (
+              <div className="flex justify-center mt-8 gap-4">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={page === 1}
+                  className="flex items-center gap-2 px-4 py-2 bg-surface border border-border rounded-lg disabled:opacity-50 hover:bg-surface-hover transition"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Anterior
+                </button>
+                <span className="flex items-center text-sm text-text-secondary">
+                  Página {page}
+                </span>
+                <button
+                  onClick={handleNextPage}
+                  disabled={!hasMore}
+                  className="flex items-center gap-2 px-4 py-2 bg-surface border border-border rounded-lg disabled:opacity-50 hover:bg-surface-hover transition"
+                >
+                  Próxima
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </main>
     </div>

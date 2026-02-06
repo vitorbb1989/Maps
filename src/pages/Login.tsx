@@ -1,7 +1,14 @@
+import { supabase } from '@/lib/supabase'
+import { CheckCircle2, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '@/lib/supabase'
-import { Loader2, CheckCircle2 } from 'lucide-react'
+import { toast } from 'sonner'
+import { z } from 'zod'
+
+const authSchema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres')
+})
 
 export const Login = () => {
   const isDev = import.meta.env.DEV
@@ -23,6 +30,16 @@ export const Login = () => {
     setLoading(true)
     setError(null)
 
+    // Validation
+    const result = authSchema.safeParse({ email, password })
+    if (!result.success) {
+      const errorMessage = result.error.errors[0]?.message || 'Dados inválidos'
+      setError(errorMessage)
+      toast.error(errorMessage)
+      setLoading(false)
+      return
+    }
+
     try {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
@@ -30,6 +47,7 @@ export const Login = () => {
           password,
         })
         if (error) throw error
+        toast.success('Conta criada com sucesso! Verifique seu email.')
         // Auto sign-in usually happens, but sometimes email confirmation is needed.
         // For MVP, we'll assume it works or show a message.
       } else {
@@ -38,10 +56,12 @@ export const Login = () => {
           password,
         })
         if (error) throw error
+        toast.success('Login realizado com sucesso!')
         navigate('/dashboard')
       }
     } catch (err: any) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }
@@ -49,6 +69,7 @@ export const Login = () => {
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-bg text-text">
+
       {/* Branding Section */}
       <div className="bg-bg-secondary p-8 md:p-12 flex flex-col justify-center border-r border-border">
         <div className="max-w-md mx-auto w-full">

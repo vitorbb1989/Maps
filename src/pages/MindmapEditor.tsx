@@ -6,16 +6,16 @@ import { ArrowLeft, ArrowRight, Download, History, Loader2, RotateCcw, Save } fr
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ReactFlow, {
-    addEdge,
-    Background,
-    Connection,
-    Controls,
-    Edge,
-    Node,
-    Panel,
-    ReactFlowProvider,
-    useEdgesState,
-    useNodesState
+  addEdge,
+  Background,
+  Connection,
+  Controls,
+  Edge,
+  Node,
+  Panel,
+  ReactFlowProvider,
+  useEdgesState,
+  useNodesState
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 
@@ -50,16 +50,8 @@ type MindmapNodeData = {
 type FlowNode = Node<MindmapNodeData>
 type FlowEdge = Edge
 
-const useDebounce = <T,>(value: T, delay: number) => {
-  const [debouncedValue, setDebouncedValue] = useState(value)
+// Removed old useDebounce implementation
 
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay)
-    return () => clearTimeout(handler)
-  }, [value, delay])
-
-  return debouncedValue
-}
 
 const nodeTypes = { mindmap: MindmapNode }
 
