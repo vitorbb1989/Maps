@@ -1,6 +1,7 @@
 import { useAuth } from '@/components/AuthProvider'
 import { MindmapNode } from '@/components/MindmapNode'
 import { supabase } from '@/lib/supabase'
+import type { DocEdge, DocNode, MindmapDoc } from '@/types/mindmap'
 import { format } from 'date-fns'
 import { ArrowLeft, ArrowRight, Download, History, Loader2, RotateCcw, Save } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -18,23 +19,6 @@ import ReactFlow, {
   useNodesState
 } from 'reactflow'
 import 'reactflow/dist/style.css'
-
-type DocNode = {
-  id: string
-  position: { x: number; y: number }
-  data: { label: string; parentId?: string }
-}
-
-type DocEdge = {
-  id: string
-  source: string
-  target: string
-}
-
-type MindmapDoc = {
-  nodes: DocNode[]
-  edges: DocEdge[]
-}
 
 type MindmapNodeData = {
   label: string
@@ -130,6 +114,21 @@ export const MindmapEditor = () => {
     }
     return null
   }, [])
+
+  // Edges are the source of truth for parentage; keep node.data.parentId in sync
+  // whenever edges change (drag-connect, deletion, subtree removal, load, etc.)
+  useEffect(() => {
+    setNodes((nds) => {
+      let changed = false
+      const next = nds.map((n) => {
+        const parentId = getParentId(n.id) ?? undefined
+        if (n.data?.parentId === parentId) return n
+        changed = true
+        return { ...n, data: { ...n.data, parentId } }
+      })
+      return changed ? next : nds
+    })
+  }, [edges, getParentId, setNodes])
 
   const isAncestor = useCallback(
     (ancestorId: string, descendantId: string): boolean => {

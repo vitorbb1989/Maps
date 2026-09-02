@@ -87,6 +87,7 @@ export const Dashboard = () => {
       navigate(`/mindmap/${data.id}`)
     } catch (error) {
       console.error('Error creating mindmap:', error)
+      setError('Erro ao criar mindmap')
     } finally {
       setCreating(false)
     }
@@ -102,6 +103,7 @@ export const Dashboard = () => {
       setMindmaps(mindmaps.filter((m) => m.id !== id))
     } catch (error) {
       console.error('Error deleting mindmap:', error)
+      setError('Erro ao excluir mindmap')
     }
   }
 
