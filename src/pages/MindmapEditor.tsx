@@ -115,20 +115,33 @@ export const MindmapEditor = () => {
     return null
   }, [])
 
+  // Structural signature of edges (source->target pairs only) so cosmetic-only
+  // edge updates (select/hover restyling in applyEdgeStyles) don't retrigger sync below.
+  const edgeStructureKey = useMemo(
+    () => edges.map((e) => `${e.source}>${e.target}`).join('|'),
+    [edges]
+  )
+
   // Edges are the source of truth for parentage; keep node.data.parentId in sync
-  // whenever edges change (drag-connect, deletion, subtree removal, load, etc.)
+  // whenever the edge *structure* changes (drag-connect, deletion, subtree removal, load, etc.)
   useEffect(() => {
+    const parentByTarget = new Map<string, string>()
+    for (const e of edgesRef.current) {
+      if (!parentByTarget.has(e.target)) parentByTarget.set(e.target, e.source)
+    }
+
     setNodes((nds) => {
       let changed = false
       const next = nds.map((n) => {
-        const parentId = getParentId(n.id) ?? undefined
+        const parentId = parentByTarget.get(n.id) ?? undefined
         if (n.data?.parentId === parentId) return n
         changed = true
         return { ...n, data: { ...n.data, parentId } }
       })
       return changed ? next : nds
     })
-  }, [edges, getParentId, setNodes])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [edgeStructureKey, setNodes])
 
   const isAncestor = useCallback(
     (ancestorId: string, descendantId: string): boolean => {
