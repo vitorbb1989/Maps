@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { MindmapDoc } from '@/types/mindmap'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -13,7 +14,7 @@ export type Mindmap = {
   id: string
   user_id: string
   title: string
-  current_doc_json: any
+  current_doc_json: MindmapDoc
   created_at: string
   updated_at: string
 }
@@ -22,6 +23,6 @@ export type MindmapSnapshot = {
   id: string
   mindmap_id: string
   user_id: string
-  doc_json: any
+  doc_json: MindmapDoc
   created_at: string
 }
